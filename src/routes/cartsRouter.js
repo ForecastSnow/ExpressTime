@@ -12,10 +12,26 @@ cartsRouter.get("/:cid", (req, res) => {
     try {
         res.status(200).send(cart.getCart(cid));
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        res.status(400).send({ message: error.message });
     }
 
 });
+
+cartsRouter.post("/", (req, res) => {
+
+    cart.createDataCart();
+
+    try {
+        res.status(200).send({ message: "Carrito generado con exito" })
+    } catch (error) {
+        res.status(500).send({ message: error })
+    }
+
+
+
+
+
+})
 
 cartsRouter.post("/:cid/product/:pid", (req, res) => {
 
@@ -29,7 +45,7 @@ cartsRouter.post("/:cid/product/:pid", (req, res) => {
 
     } catch (error) {
 
-        res.status(400).send({ message: "Error al intentar agregar el articulo al carrito " + error})
+        res.status(400).send({ message: "Error al intentar agregar el articulo al carrito " + error })
 
     }
 

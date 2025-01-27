@@ -35,8 +35,9 @@ productsRouter.post("/", (req, res) => {
 
     const { title, description, code, price, stock, category, thumbnails, id } = req.body;
 
+
     try {
-        if (!title || !description || !code || !price || !stock || !category || !thumbnails) {
+        if (!title || !description || !code || !price || !stock || !category) {
             throw new Error("Campos incompletos")
         }
         products.addProduct(title, description, code, price, stock, category, thumbnails, id);
@@ -53,19 +54,19 @@ productsRouter.put("/:pid", (req, res) => {
 
     const { pid } = req.params;
 
-    const { title, description, code, price, stock, category, thumbnails } = req.body;
-
+    const { title, description, code, price, stock, category, thumbnails, status } = req.body;
 
     try {
-        if (!title || !description || !code || !price || !stock || !category || !thumbnails) {
+        if (!title || !description || !code || !price || !stock || !category) {
             throw new Error("Campos incompletos")
         }
 
-        products.putProduct(title, description, code, price, stock, category, thumbnails, parseInt(pid))
+        products.putProduct(title, description, code, price, stock, category, thumbnails, status, parseInt(pid))
         res.status(200).send({ message: "Producto modificado con exito" })
     } catch (error) {
         res.status(400).send({ error: error.message })
     }
+
 
 
 });

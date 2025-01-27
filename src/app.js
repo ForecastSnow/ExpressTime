@@ -6,11 +6,6 @@ const app = express();
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-
-    res.status(200).send({masagge: "todo bien"})
-})
-
 app.use("/api/products/", productsRouter); 
 
 app.use("/api/carts/", cartsRouter) 

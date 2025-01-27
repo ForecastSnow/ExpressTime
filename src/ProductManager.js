@@ -3,7 +3,7 @@ import fs from "fs";
 class ProductManager {
 
     constructor(pathFile) {
-        this.pathFile = pathFile ?? "../ch/dataBase/dataProducts.json"
+        this.pathFile = pathFile ?? "./../ch/dataBase/dataProducts.json"
 
     }
 
@@ -30,11 +30,14 @@ class ProductManager {
         const data = fs.readFileSync(this.pathFile, "utf8", (error) => {
             throw new Error("error al leer la dataBase especificada ");
         })
+
         return JSON.parse(data);
 
     }
 
-    addProduct(title, description, code, price, stock, category, thumbnails, id) {
+    addProduct(title, description, code, price, stock, category, thumbnails, status, id) {
+
+
 
         const newProduct = {
 
@@ -46,14 +49,14 @@ class ProductManager {
             stock: stock,
             category: category,
             thumbnails: thumbnails,
-            status: true
+            status: status ?? true
         }
 
         const productosActuales = this.getProducts();
 
         productosActuales.push(newProduct);
 
-        fs.writeFileSync(this.pathFile, JSON.stringify(productosActuales), "utf8", (error) => {
+        fs.writeFileSync(this.pathFile, JSON.stringify(productosActuales, null, 2), "utf8", (error) => {
             if (error) {
                 throw new Error("Error al guardar en el database");
             }
@@ -75,7 +78,7 @@ class ProductManager {
         return productoByID;
     }
 
-    putProduct(title, description, code, price, stock, category, thumbnails, id) {
+    putProduct(title, description, code, price, stock, category, thumbnails, status, id) {
 
         if (this.getProductById(id) instanceof Error) {
             throw error
@@ -83,7 +86,7 @@ class ProductManager {
 
         this.deleteProduct(id);
 
-        this.addProduct(title, description, code, price, stock, category, thumbnails, id);
+        this.addProduct(title, description, code, price, stock, category, thumbnails, status, id);
 
     }
 
@@ -97,7 +100,7 @@ class ProductManager {
 
         productosActuales = productosActuales.filter((producto) => producto.id != id);
 
-        fs.writeFileSync(this.pathFile, JSON.stringify(productosActuales), "utf8", (error) => {
+        fs.writeFileSync(this.pathFile, JSON.stringify(productosActuales, null, 2), "utf8", (error) => {
             if (error) {
                 throw new Error(error);
             }

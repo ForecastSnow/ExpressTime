@@ -11,38 +11,57 @@ class CartManager {
 
     createDataCart() {
 
-        fs.writeFileSync(this.pathFile, JSON.stringify([], null, 2), "utf8", (error) => {
-            if (error) {
-                console.log("algo salio mal al intentar crear la dataBase del cart \n" + error)
-                throw error
-            }
-        })
+        const id = Date.now();
 
-        console.log("se ah creado la dataBase del cart");
+        if (fs.existsSync(this.pathFile)) {
+
+            const dataCart = JSON.parse(fs.readFileSync(this.pathFile, "utf8"));
+
+            dataCart.push({ "id": id, "products": [] });
+
+            fs.writeFileSync(this.pathFile, JSON.stringify(dataCart, null, 2), "utf8", (error) => {
+                if (error) {
+                    throw error;
+                };
+            });
+
+        } else {
+
+            fs.writeFileSync(this.pathFile, JSON.stringify([{ "id": id, "products": [] }], null, 2), "utf8", (error) => {
+                if (error) {
+                    console.log("algo salio mal al intentar crear la dataBase del cart \n" + error)
+                    throw error
+                }
+            })
+
+            console.log("se ah creado la dataBase del cart");
+
+        }
+
+
     }
 
     getCart(id) {
-
         if (!fs.existsSync(this.pathFile)) {
 
-            this.createDataCart();
+            throw new Error("El carrito no existe")
 
         };
-
 
         const dataCart = JSON.parse(fs.readFileSync(this.pathFile, "utf8"));
 
         if (!dataCart.some(cart => cart.id == id)) {
             throw new Error("El carrito no existe")
+
         }
 
-        return JSON.stringify(dataCart.find((cart) => cart.id == id))
-
-
+        return JSON.stringify(dataCart.find((cart) => cart.id == id).products)
 
     }
 
     addCartProduct(cid, pid) {
+
+        this.getCart(cid)
 
         let dataCart = JSON.parse(fs.readFileSync(this.pathFile, "utf8"));
 
@@ -76,17 +95,8 @@ class CartManager {
 
             if (!inCart) {
 
-                actualCartProducts.map((product) => {
+                actualCartProducts.push({ "id": pid, "quantity": 1 })
 
-                    if (product.id == parseInt(pid)) {
-
-                        product.push([{ "id": pid, "quantity": 1 }])
-
-                    }
-
-
-
-                })
             }
 
             dataCart = dataCart.filter((cart) => cart.id != cid)
@@ -95,7 +105,7 @@ class CartManager {
 
         }
 
-        fs.writeFileSync(this.pathFile, JSON.stringify(dataCart), "utf8", (error) => {
+        fs.writeFileSync(this.pathFile, JSON.stringify(dataCart, null, 2), "utf8", (error) => {
             if (error) {
                 throw error;
             };
