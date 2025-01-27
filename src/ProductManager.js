@@ -3,7 +3,7 @@ import fs from "fs";
 class ProductManager {
 
     constructor(pathFile) {
-        this.pathFile = pathFile ?? "./../ch/dataBase/dataProducts.json"
+        this.pathFile = pathFile ?? "./dataBase/dataProducts.json"
 
     }
 

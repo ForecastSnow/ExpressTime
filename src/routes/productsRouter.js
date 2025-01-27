@@ -4,6 +4,7 @@ import ProductManager from "../ProductManager.js"
 
 
 const productsRouter = express.Router();
+
 productsRouter.use(express.json());
 
 const products = new ProductManager();

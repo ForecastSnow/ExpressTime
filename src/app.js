@@ -10,4 +10,4 @@ app.use("/api/products/", productsRouter);
 
 app.use("/api/carts/", cartsRouter) 
 
-app.listen(8080, () => console.log("Fire in the hole"))
+app.listen(8080, () => console.log("Servidor Express iniciado. hosteado en http://localhost:8080/"))

@@ -5,7 +5,7 @@ class CartManager {
 
     constructor(pathFile) {
 
-        this.pathFile = pathFile ?? "../ch/dataBase/dataCart.json";
+        this.pathFile = pathFile ?? "./dataBase/dataCart.json";
 
     }
 
